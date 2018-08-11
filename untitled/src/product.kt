@@ -1,4 +1,4 @@
-class product() {
+public class product() {
     var code: Int? = null
     var name: String? = null
     var cantidad: Int? = null
