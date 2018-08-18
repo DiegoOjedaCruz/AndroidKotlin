@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">My Application</string>
+    <string name="action_settings">Settings</string>
+    <string name="str_number_1">Digite numero 1</string>
+    <string name="str_number_2">Digite numero 2</string>
+    <string name="sumar">Sumar</string>
+    <string name="X">multiplicar</string>
+    <string name="required_field">este campo es obligatorio</string>
+
+</resources>
