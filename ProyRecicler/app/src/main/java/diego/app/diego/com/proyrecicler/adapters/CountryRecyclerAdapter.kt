@@ -35,6 +35,7 @@ class CountryRecyclerAdapter :
         holder.nameTextView!!.text = myDataset[position].name
         holder.cityTextView!!.text = myDataset[position].city
         if (myDataset[position].flag != null)
+
             holder.flagImageView!!.setImageResource(myDataset[position].flag!!)
     }
 
