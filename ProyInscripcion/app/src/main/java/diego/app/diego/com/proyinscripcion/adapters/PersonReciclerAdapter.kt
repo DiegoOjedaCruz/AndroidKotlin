@@ -45,6 +45,7 @@ class PersonReciclerAdapter :
                 Log.w("Form", "flag ${holder.nombreTextView}")
             }
             if (myDataset[position].flag != null)
+
                 holder.flagImageView!!.setImageResource(myDataset[position].flag!!)
         }
 
