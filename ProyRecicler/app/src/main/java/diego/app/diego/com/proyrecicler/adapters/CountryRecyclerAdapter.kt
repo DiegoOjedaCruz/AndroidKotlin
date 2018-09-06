@@ -13,9 +13,11 @@ class CountryRecyclerAdapter :
         RecyclerView.Adapter<CountryRecyclerAdapter.ViewHolder> {
 
     private var myDataset: ArrayList<Country> = ArrayList()
+    private var mListenetr: CountryAdapterListener? = null
 
-    constructor(myDataset: ArrayList<Country>) {
+    constructor(myDataset: ArrayList<Country>, Listener: CountryAdapterListener) {
         this.myDataset = myDataset;
+        mListenetr = Listener
     }
 
     override fun onCreateViewHolder(parent: ViewGroup,
@@ -37,24 +39,47 @@ class CountryRecyclerAdapter :
         if (myDataset[position].flag != null)
 
             holder.flagImageView!!.setImageResource(myDataset[position].flag!!)
+        holder.nview.setOnLongClickListener {
+
+            if (mListenetr != null) {
+                mListenetr!!.onDeleteCountryClick(myDataset[position],position)
+            }
+            true
+        }
+
+        holder.editImageView!!.setOnClickListener {
+
+            if (mListenetr != null)
+                mListenetr!!.onUpdateCountryClick(myDataset[position],position)
+
+
+        }
+
     }
+
 
     // Return the size of your dataset (invoked by the layout manager)
     override fun getItemCount() = myDataset.size
 
     class ViewHolder(view: View)
         : RecyclerView.ViewHolder(view) {
-
+        var nview = view
         var nameTextView: TextView? = null
         var cityTextView: TextView? = null
         var flagImageView: ImageView? = null
+        var editImageView: ImageView? = null
 
         init {
             nameTextView = view.findViewById(R.id.nombre)
             cityTextView = view.findViewById(R.id.ciudad)
             flagImageView = view.findViewById(R.id.imagen)
+            editImageView = view.findViewById(R.id.compartir)
+
         }
 
     }
+
+
+
 
 }

@@ -39,6 +39,8 @@ constructor(context: Context){
         //return images.firstOrNull { x -> x == item }
         return images[pos]
     }
-
+    fun getPos(id: Int): Int? {
+        return images.indexOfFirst { x -> x == id }
+    }
 
 }

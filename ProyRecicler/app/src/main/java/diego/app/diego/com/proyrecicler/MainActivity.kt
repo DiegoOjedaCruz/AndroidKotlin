@@ -2,18 +2,21 @@ package diego.app.diego.com.proyrecicler
 
 import android.content.Intent
 import android.os.Bundle
-import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import diego.app.diego.com.proyrecicler.adapters.CountryAdapterListener
 import diego.app.diego.com.proyrecicler.adapters.CountryRecyclerAdapter
 import diego.app.diego.com.proyrecicler.models.Country
-
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 
-class  MainActivity
-    : AppCompatActivity()  {
+class MainActivity
+    : AppCompatActivity(), CountryAdapterListener {
+
+
+
     var list = ArrayList<Country>()
     var adapter: CountryRecyclerAdapter? = null
 
@@ -31,19 +34,28 @@ class  MainActivity
         }
 
 
-            list.add(Country("Colombia", "", "Bogota"))
+      //  list.add(Country("Colombia", "", "Bogota"))
 
-            adapter = CountryRecyclerAdapter(list)
-            recicler.adapter = adapter
+        adapter = CountryRecyclerAdapter(list, this)
+        recicler.adapter = adapter
 
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == 1){
-            val country = data!!.getSerializableExtra("country") as Country
-            list.add(country)
-            adapter!!.notifyDataSetChanged()
+        if (data != null) {
+            val country = data.getSerializableExtra("country") as Country
+            when (resultCode) {
+                FormActivity.CREATE -> {
+                    list.add(country)
+                    adapter!!.notifyDataSetChanged()
+                }
+                FormActivity.UPDATE -> {
+                    val pos = data.getIntExtra("post", -1)
+                    list.set(pos, country)
+                    adapter!!.notifyDataSetChanged()
+                }
+            }
         }
     }
 
@@ -62,4 +74,20 @@ class  MainActivity
             else -> super.onOptionsItemSelected(item)
         }
     }
+    override fun onDeleteCountryClick(item: Country, pos: Int) {
+        Log.d("mainActivity", "OnDeleteCountryClick$pos")
+        list.remove(item)
+        adapter!!.notifyItemRemoved(pos)
+    }
+
+
+
+    override fun onUpdateCountryClick(item: Country, pos: Int) {
+        Log.d("main activity" , "onUpdateCountryClick")
+        var intent = Intent(this, FormActivity::class.java)
+        intent.putExtra("object", item)
+        intent.putExtra("post", pos)
+        startActivityForResult(intent,0)
+    }
+
 }
